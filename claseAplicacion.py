@@ -96,7 +96,7 @@ class Aplicacion:
             self.__panel.set(str(Fraction(resultado).limit_denominator()))
         else:
             if self.__operador.get() == '%':
-                self.__panel.set(float(Fraresultado))
+                self.__panel.set(float(resultado))
             else:
                 self.__panel.set(int(resultado))
 
