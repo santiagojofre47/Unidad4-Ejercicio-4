@@ -1,10 +1,9 @@
 class Fraccion:
     __numerador = None
     __denominador = None
-    __resultado = None
+   
 
     def __init__(self, numerador = None, denominador = None):
-        self.__resultado = 0.0
         self.__numerador = numerador
         self.__denominador = denominador
 
@@ -12,17 +11,10 @@ class Fraccion:
         return f'{self.__numerador}/{self.__denominador}'    
 
 
-    def crearResultado(self, unResultado):
-        self.__resultado = unResultado
-
-    def convertirAfraccion(self):
-        r = self.__numerador/self.__denominador
-        return r
-
     def getDenominador(self):
         return self.__denominador    
 
-    def simplifica(self, m, n):
+    def getResto(self, m, n):
         while m % n != 0:
             mViejo = m
             nViejo = n
@@ -30,47 +22,54 @@ class Fraccion:
             m = nViejo
             n = mViejo % nViejo
         return n     
-        
+    def simplificar(self):
+        resto = self.getResto(self.__numerador,self.__denominador)
+        self.__numerador = int(self.__numerador/resto)
+        self.__denominador = int(self.__denominador/resto)
     def __add__(self, p2):
-        n1 = self.convertirAfraccion()
-        n2 = p2.convertirAfraccion()
-        res = n1+n2
-        return res
+        assert isinstance(p2,Fraccion)
+        fraccion = None
+        if self.__denominador != p2.__denominador:
+            denom = self.minimo_comun_multiplo(self.__denominador , p2.__denominador)
+            numerador = ((denom / self.__denominador)*self.__numerador) + ((denom / p2.__denominador)*p2.__numerador)
+            fraccion = Fraccion(numerador,denom)
+        else:
+            denom = self.__denominador
+            numerador = ((denom / self.__denominador)*self.__numerador) + ((denom / p2.__denominador)*p2.__numerador)
+            fraccion = Fraccion(numerador,denom)
+        return fraccion
 
     def __sub__(self, p2):
-        n1 = self.convertirAfraccion()
-        n2 = p2.convertirAfraccion()
-        res = n1-n2
-        return res
+        assert isinstance(p2,Fraccion)
+        fraccion = None
+        if self.__denominador != p2.__denominador:
+            denom = self.minimo_comun_multiplo(self.__denominador , p2.__denominador)
+            numerador = ((denom / self.__denominador)*self.__numerador) - ((denom / p2.__denominador)*p2.__numerador)
+            fraccion = Fraccion(numerador,denom)
+        else:
+            denom = self.__denominador
+            numerador = ((denom / self.__denominador)*self.__numerador) - ((denom / p2.__denominador)*p2.__numerador)
+            fraccion = Fraccion(numerador,denom)
+        return fraccion
 
     def __mul__(self, p2):
-        n1 = self.convertirAfraccion()
-        n2 = p2.convertirAfraccion()
-        res = n1*n2
-        return res
+        assert isinstance(p2, Fraccion)
+        fraccion = Fraccion(self.__numerador*p2.__numerador,self.__denominador*p2.__denominador)
+        return fraccion
 
     def __truediv__(self, p2):
-        n1 = self.convertirAfraccion()
-        n2 = p2.convertirAfraccion()
-        res = n1/n2
-        return res
+        assert isinstance(p2, Fraccion)
+        fraccion = Fraccion(self.__numerador * p2.__denominador, self.__denominador * p2.__numerador)
+        return fraccion
 
-if __name__ == '__main__':
-
-    fr1 = Fraccion(1,2)
-    fr2 = Fraccion(1,2)
-    print(fr1)
-    print(fr2)
-    res = fr1+fr2
-    res2 = fr1-fr2
-    res3 = fr1/fr2
-    res4 = fr1*fr2
-    print(res)
-    print(res2)
-    print(res3)
-    print(res4)
+    def maximo_comun_divisor(self,a, b):
+        temporal = 0
+        while b != 0:
+            temporal = b
+            b = a % b
+            a = temporal
+        return a
 
 
-            
-
-
+    def minimo_comun_multiplo(self,a, b):
+        return (a * b) / self.maximo_comun_divisor(a, b)   
