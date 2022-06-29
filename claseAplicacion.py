@@ -12,10 +12,10 @@ class Aplicacion:
     
     def __init__(self):
         self.__ventana = Tk()
-        self.__ventana.geometry('207x220')#reajustar
+        self.__ventana.geometry('252x210')#reajustar
         self.__ventana.title('Calculadora')
         self.__ventana.resizable(0,0)
-       # self.__ventana.iconbitmap(r'C:\programacion\Ejercicios\Unidad 4\Ejercicio 4\static\calculadora.ico')
+        #self.__ventana.iconbitmap(r'\static\calculadora.ico')
 
         self.__operador = StringVar()
         self.__panel = StringVar()
@@ -93,12 +93,15 @@ class Aplicacion:
             resultado=fraccion1/fraccion2
 
         if fraccion1.getDenominador()!=1 or fraccion2.getDenominador()!=1:
-            self.__panel.set(str(Fraction(resultado).limit_denominator()))
+            resultado.simplificar()
+            self.__panel.set((str(resultado)))
         else:
             if self.__operador.get() == '%':
-                self.__panel.set(float(resultado))
+                resultado.simplficar()
+                self.__panel.set(str(resultado))
             else:
-                self.__panel.set(int(resultado))
+                resultado.simplificar()
+                self.__panel.set(str(resultado))
 
     def ponerOperador(self, op):
         if op == '=':
