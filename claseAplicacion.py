@@ -12,7 +12,8 @@ class Aplicacion:
     
     def __init__(self):
         self.__ventana = Tk()
-        self.__ventana.geometry('252x210')#reajustar
+        self.__ventana.geometry('252x210')#reajustar para Linux
+        #self.__ventana.geometry('207x220')#reajustar para Windows
         self.__ventana.title('Calculadora')
         self.__ventana.resizable(0,0)
         #self.__ventana.iconbitmap(r'\static\calculadora.ico')
